@@ -13,6 +13,8 @@ const tokenAddressList = require("../../migrations/addressesList/tokenAddress/to
 const GeyserFactory = artifacts.require("GeyserFactory")
 const GeyserToken = artifacts.require("GeyserToken")
 const LPToken = artifacts.require("LPToken")
+const RewardToken = artifacts.require("RewardToken")
+
 
 /**
  * @notice - This is the test of GeyserFactory.sol
@@ -30,11 +32,13 @@ contract("GeyserFactory", function(accounts) {
     let geyserFactory
     let geyserToken
     let lpToken
+    let rewardToken
 
     /// Global variable for each contract addresses
     let GEYSER_FACTORY
     let GEYSER_TOKEN
     let LP_TOKEN
+    let REWARD_TOKEN
 
     async function getEvents(contractInstance, eventName) {
         const _latestBlock = await time.latestBlock()
@@ -52,7 +56,12 @@ contract("GeyserFactory", function(accounts) {
     } 
 
     describe("Setup smart-contracts", () => {
-        it("Deploy the UNI-V2 LP token (mock) contract instance", async () => {
+        it("Deploy the Reward Token (mock) contract instance", async () => {
+            rewardToken = await RewardToken.new({ from: deployer })
+            REWARD_TOKEN = rewardToken.address
+        })
+
+        it("Deploy the UNI-V2 LP Token (mock) contract instance", async () => {
             lpToken = await LPToken.new({ from: deployer })
             LP_TOKEN = lpToken.address
         })
@@ -68,6 +77,7 @@ contract("GeyserFactory", function(accounts) {
         })
 
         it("[Log]: Deployed-contracts addresses", async () => {
+            console.log("=== REWARD_TOKEN ===", REWARD_TOKEN)
             console.log("=== LP_TOKEN ===", LP_TOKEN)
             console.log("=== GEYSER_TOKEN ===", GEYSER_TOKEN)
             console.log("=== GEYSER_FACTORY ===", GEYSER_FACTORY)
