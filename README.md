@@ -1,11 +1,8 @@
-# Shared-Trove on Liquity
+# Geyser on Polygon
 
 ***
-## 【Introduction of the Shared-Trove on Liquity】
-- This is a smart contract that is able to create a shared-trove: 
-  - multiple users per single Trove, with the aim of a reduced minimum net debt per user, 
-  - and `batched top-ups / adjustments / withdrawals` to save on gas costs
-    (※ Note: Implementation of `withdrawals` above is still in progress)
+## 【Introduction of the Geyser on Polygon】
+- This is a smart contract that 
 
 &nbsp;
 
@@ -13,7 +10,6 @@
 
 ## 【Workflow】
 - Diagram of workflow
-![【Diagram】Shared-Trove on Liquity](https://user-images.githubusercontent.com/19357502/113228096-1699dd00-92cf-11eb-9c3b-b63114dab361.jpg)
 
 &nbsp;
 
@@ -82,11 +78,4 @@ $ ganache-cli -d --fork https://kovan.infura.io/v3/{YOUR INFURA KEY OF KOVAN}
 ***
 
 ## 【References】
-- Liquity
-  - GR9 Prize (Liquity Bounty 3 - “Open Ended: Best Liquity Tool / Integration”)：https://gitcoin.co/issue/liquity/beta/4/100025007
-  - dApp on Kovan：https://devui.liquity.org/latest/
-  - Smart contract：https://github.com/liquity/beta
-    - Interfaces: 
-    - Proxy scripts:
-  - Deployed-addresses on Kovan：https://github.com/liquity/liquity/blob/master/packages/lib-ethers/deployments/default/kovan.json
-
+- Polygon (Open Defi Hackathon)：https://gitcoin.co/issue/maticnetwork/matic-bounties/20/100025642

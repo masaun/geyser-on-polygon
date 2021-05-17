@@ -6,7 +6,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "truffle test ./test/test-local/*",
+    "test": "truffle test ./test/test-local/* --network local",
     "test:SharedTrove": "truffle test ./test/test-local/SharedTrove.test.js",
     "compile:local": "truffle compile --reset --network local",
     "migrate:local": "truffle migrate --reset --network local",
@@ -19,7 +19,10 @@
     "@openzeppelin/test-helpers": "^0.5.10",
     "@truffle/hdwallet-provider": "^1.2.0",
     "dotenv": "^8.2.0",
-    "eth-block-tracker": "^4.4.3"
+    "eth-block-tracker": "^4.4.3",
+    "bn-chai": "^1.0.1",
+    "chai": "^4.2.0",
+    "mocha": "^8.1.1"
   },
   "devDependencies": {}
 }
