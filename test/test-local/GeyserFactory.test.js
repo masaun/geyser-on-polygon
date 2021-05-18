@@ -106,6 +106,11 @@ contract("GeyserFactory", function(accounts) {
             console.log("=== emitted-event: GeyserCreated ===", event)            
         })
 
+        it("count()", async () => {
+            /// [Return]: total number of Geysers created by the factory
+            let totalNumberOfGeysers = await geyserFactory.count()
+            console.log("=== total number of Geysers created by the factory ===", String(totalNumberOfGeysers))
+        })
     })
 
 })
