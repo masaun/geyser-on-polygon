@@ -15,12 +15,12 @@
   "license": "MIT",
   "dependencies": {
     "@openzeppelin/contracts": "^3.4.1",
+    "@openzeppelin/test-environment": "^0.1.9",
     "@openzeppelin/test-helpers": "^0.5.10",
     "@truffle/hdwallet-provider": "^1.2.0",
+    "chai": "^4.3.4",
     "dotenv": "^8.2.0",
-    "eth-block-tracker": "^4.4.3",
-    "@openzeppelin/test-environment": "^0.1.9",
-    "chai": "^4.3.4"
+    "eth-block-tracker": "^4.4.3"
   },
   "devDependencies": {}
 }

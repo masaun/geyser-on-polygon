@@ -89,7 +89,23 @@ contract("GeyserFactory", function(accounts) {
 
     describe("Workflow", () => {
         it("create()", async () => {
+            const stakingToken = LP_TOKEN
+            const rewardToken = REWARD_TOKEN
+            const bonusMin = bonus(0.0)
+            const bonusMax = bonus(1.0)
+            const bonusPeriod = days(365)
+            let txReceipt = await geyserFactory.create(stakingToken, 
+                                                       rewardToken, 
+                                                       bonusMin, 
+                                                       bonusMax, 
+                                                       bonusPeriod, 
+                                                       { from: deployer })
+
+            /// Retrive emitted-event
+            let event = await getEvents(geyserFactory, "GeyserCreated")
+            console.log("=== emitted-event: GeyserCreated ===", event)            
         })
+
     })
 
 })
