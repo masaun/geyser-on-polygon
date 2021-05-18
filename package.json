@@ -7,22 +7,20 @@
   },
   "scripts": {
     "test": "truffle test ./test/test-local/* --network local",
-    "test:SharedTrove": "truffle test ./test/test-local/SharedTrove.test.js",
+    "test:GeyserFactory": "truffle test ./test/test-local/GeyserFactory.test.js",
     "compile:local": "truffle compile --reset --network local",
-    "migrate:local": "truffle migrate --reset --network local",
-    "start-blank": "rm -rf client/src && cp -rf barebones/src client/"
+    "migrate:local": "truffle migrate --reset --network local"
   },
   "author": "masaun",
   "license": "MIT",
   "dependencies": {
     "@openzeppelin/contracts": "^3.4.1",
+    "@openzeppelin/test-environment": "^0.1.9",
     "@openzeppelin/test-helpers": "^0.5.10",
     "@truffle/hdwallet-provider": "^1.2.0",
+    "chai": "^4.3.4",
     "dotenv": "^8.2.0",
-    "eth-block-tracker": "^4.4.3",
-    "bn-chai": "^1.0.1",
-    "chai": "^4.2.0",
-    "mocha": "^8.1.1"
+    "eth-block-tracker": "^4.4.3"
   },
   "devDependencies": {}
 }
