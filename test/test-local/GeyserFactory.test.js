@@ -5,6 +5,9 @@ const web3 = new Web3(new Web3.providers.WebsocketProvider('ws://localhost:8545'
 /// Openzeppelin test-helper
 const { time } = require('@openzeppelin/test-helpers');
 
+/// Geyser's helper
+const { tokens, bonus, days, toFixedPointBigNumber, fromFixedPointBigNumber } = require('./geyser/util/helper');
+
 /// Import deployed-addresses
 const contractAddressList = require("../../migrations/addressesList/contractAddress/contractAddress.js")
 const tokenAddressList = require("../../migrations/addressesList/tokenAddress/tokenAddress.js")
@@ -85,7 +88,8 @@ contract("GeyserFactory", function(accounts) {
     })
 
     describe("Workflow", () => {
-
+        it("create()", async () => {
+        })
     })
 
 })
