@@ -7,6 +7,7 @@
   },
   "scripts": {
     "test": "truffle test ./test/test-local/* --network local",
+    "test:Geyser": "truffle test ./test/test-local/Geyser.test.js",
     "test:GeyserFactory": "truffle test ./test/test-local/GeyserFactory.test.js",
     "compile:local": "truffle compile --reset --network local",
     "migrate:local": "truffle migrate --reset --network local"
