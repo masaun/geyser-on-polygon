@@ -130,10 +130,11 @@ contract("Geyser", function(accounts) {
 
         describe("Workflow of Geyser.sol", () => {
             it("stake()", async () => {
-                /// [Todo]: 
                 const amount = toWei("10")
                 const calldata = []
-                let txReceipt1 = await geyser.approve(GEYSER, amount, { from: deployer })
+
+                /// [Note]: LP token is staking token
+                let txReceipt1 = await lpToken.approve(GEYSER, amount, { from: deployer })
                 let txReceipt2 = await geyser.stake(amount, calldata, { from: deployer })
             })
 
