@@ -46,6 +46,14 @@ contract("Geyser", function(accounts) {
     let LP_TOKEN
     let REWARD_TOKEN
 
+    function toWei(amount) {
+        return web3.utils.toWei(`${ amount }`, 'ether')
+    } 
+
+    function fromWei(amount) {
+        return web3.utils.fromWei(`${ amount }`, 'ether')
+    }
+
     async function getEvents(contractInstance, eventName) {
         const _latestBlock = await time.latestBlock()
         const LATEST_BLOCK = Number(String(_latestBlock))
@@ -107,14 +115,30 @@ contract("Geyser", function(accounts) {
                 let event = await getEvents(geyserFactory, "GeyserCreated")
                 console.log("=== emitted-event: GeyserCreated ===", event)
 
+                /// Create the Geyser contract instance
                 GEYSER = event.geyser
-                console.log("=== GEYSER ===", GEYSER)                
+                geyser = await Geyser.at(GEYSER)
+                console.log("=== GEYSER ===", GEYSER)
             })
 
             it("count()", async () => {
                 /// [Return]: total number of Geysers created by the factory
                 let totalNumberOfGeysers = await geyserFactory.count()
                 console.log("=== total number of Geysers created by the factory ===", String(totalNumberOfGeysers))
+            })
+        })
+
+        describe("Workflow of Geyser.sol", () => {
+            it("stake()", async () => {
+                /// [Todo]: 
+                const amount = toWei("10")
+                const calldata = []
+                let txReceipt1 = await geyser.approve(GEYSER, amount, { from: deployer })
+                let txReceipt2 = await geyser.stake(amount, calldata, { from: deployer })
+            })
+
+            it("unstake()", async () => {
+                /// [Todo]: 
             })
         })
 
