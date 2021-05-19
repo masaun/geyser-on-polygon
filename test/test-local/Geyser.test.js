@@ -129,6 +129,14 @@ contract("Geyser", function(accounts) {
         })
 
         describe("Workflow of Geyser.sol", () => {
+            it("A owner funds 100 RewardTokens to the Geyser", async () => {
+                // owner funds geyser
+                const amount = toWei("100")
+                const duration = days(180)
+                let txReceipt1 = await rewardToken.approve(GEYSER, amount, { from: deployer });
+                let txReceipt2 = await geyser.fund(amount, duration, { from: deployer });
+            })
+
             it("stake()", async () => {
                 const amount = toWei("10")
                 const calldata = []
