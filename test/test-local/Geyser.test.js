@@ -138,8 +138,15 @@ contract("Geyser", function(accounts) {
                 let txReceipt2 = await geyser.stake(amount, calldata, { from: deployer })
             })
 
+            it("time increase 30 days", async () => {
+                await time.increase(days(30))
+            })
+
             it("unstake()", async () => {
-                /// [Todo]: 
+                const amount = toWei("10")
+                const calldata = []
+
+                let txReceipt2 = await geyser.unstake(amount, calldata, { from: deployer })
             })
         })
 
