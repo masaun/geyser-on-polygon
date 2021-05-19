@@ -13,6 +13,7 @@ const contractAddressList = require("../../migrations/addressesList/contractAddr
 const tokenAddressList = require("../../migrations/addressesList/tokenAddress/tokenAddress.js")
 
 /// Artifact of smart contracts 
+const Geyser = artifacts.require("Geyser")
 const GeyserFactory = artifacts.require("GeyserFactory")
 const GeyserToken = artifacts.require("GeyserToken")
 const LPToken = artifacts.require("LPToken")
@@ -32,12 +33,14 @@ contract("Geyser", function(accounts) {
     let user3 = accounts[3]
 
     /// Global contract instance
+    let geyser
     let geyserFactory
     let geyserToken
     let lpToken
     let rewardToken
 
     /// Global variable for each contract addresses
+    let GEYSER
     let GEYSER_FACTORY
     let GEYSER_TOKEN
     let LP_TOKEN
@@ -85,6 +88,36 @@ contract("Geyser", function(accounts) {
             console.log("=== GEYSER_TOKEN ===", GEYSER_TOKEN)
             console.log("=== GEYSER_FACTORY ===", GEYSER_FACTORY)
         })
+
+        describe("Workflow of GeyserFactory.sol", () => {
+            it("create()", async () => {
+                const stakingToken = LP_TOKEN
+                const rewardToken = REWARD_TOKEN
+                const bonusMin = bonus(0.0)
+                const bonusMax = bonus(1.0)
+                const bonusPeriod = days(365)
+                let txReceipt = await geyserFactory.create(stakingToken, 
+                                                           rewardToken, 
+                                                           bonusMin, 
+                                                           bonusMax, 
+                                                           bonusPeriod, 
+                                                           { from: deployer })
+
+                /// Retrive emitted-event
+                let event = await getEvents(geyserFactory, "GeyserCreated")
+                console.log("=== emitted-event: GeyserCreated ===", event)
+
+                GEYSER = event.geyser
+                console.log("=== GEYSER ===", GEYSER)                
+            })
+
+            it("count()", async () => {
+                /// [Return]: total number of Geysers created by the factory
+                let totalNumberOfGeysers = await geyserFactory.count()
+                console.log("=== total number of Geysers created by the factory ===", String(totalNumberOfGeysers))
+            })
+        })
+
     })
 
 })
