@@ -3,7 +3,7 @@ const Web3 = require('web3');
 const web3 = new Web3(new Web3.providers.WebsocketProvider('ws://localhost:8545'))
 
 /// Openzeppelin test-helper
-const { time } = require('@openzeppelin/test-helpers');
+const { time } = require('@openzeppelin/test-helpers')
 
 /// Geyser's helper
 const { tokens, bonus, days, toFixedPointBigNumber, fromFixedPointBigNumber } = require('./geyser/util/helper');
@@ -119,6 +119,7 @@ contract("Geyser", function(accounts) {
                 GEYSER = event.geyser
                 geyser = await Geyser.at(GEYSER)
                 console.log("=== GEYSER ===", GEYSER)
+                //console.log('=== geyser ===', geyser)
             })
 
             it("count()", async () => {
@@ -130,11 +131,14 @@ contract("Geyser", function(accounts) {
 
         describe("Workflow of Geyser.sol", () => {
             it("A owner funds 100 RewardTokens to the Geyser", async () => {
+                let rewardTokenBalance = await rewardToken.balanceOf(deployer)
+                console.log("=== rewardTokenBalance ===", fromWei(rewardTokenBalance))
+
                 // owner funds geyser
                 const amount = toWei("100")
                 const duration = days(180)
-                let txReceipt1 = await rewardToken.approve(GEYSER, amount, { from: deployer });
-                let txReceipt2 = await geyser.fund(amount, duration, { from: deployer });
+                let txReceipt1 = await rewardToken.approve(GEYSER, amount, { from: deployer })
+                let txReceipt2 = await geyser.methods["fund(uint256,uint256)"](amount, duration, { from: deployer })
             })
 
             it("stake()", async () => {
@@ -154,7 +158,7 @@ contract("Geyser", function(accounts) {
                 const amount = toWei("10")
                 const calldata = []
 
-                let txReceipt2 = await geyser.unstake(amount, calldata, { from: deployer })
+                let txReceipt = await geyser.unstake(amount, calldata, { from: deployer })
             })
         })
 
