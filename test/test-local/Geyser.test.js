@@ -150,17 +150,22 @@ contract("Geyser", function(accounts) {
                 let txReceipt2 = await geyser.stake(lpAmount, calldata, { from: deployer })
             })
 
+            it("Check the last updated-timestamp", async () => {
+                let _lastUpdated = await geyser.lastUpdated()
+                console.log('=== geyser.lastUpdated() ===', String(_lastUpdated))
+            })
+
             it("time increase 30 days", async () => {
-                let lastUpdatedTimestamp = await time.latest()
-                console.log('=== lastUpdatedTimestamp (Before time.increase) ===', String(lastUpdatedTimestamp))
+                let timestampBeforeTimeIncrease = await time.latest()
+                console.log('=== Timestamp (Before time.increase) ===', String(timestampBeforeTimeIncrease))
 
                 /// Advance time 30 days
                 await time.increase(days(30))             /// Original
                 //await time.increase(60 * 60 * 24 * 30)  /// 30 days
 
                 /// Check timestamp (Before -> After)
-                lastUpdatedTimestamp = await time.latest()
-                console.log('=== lastUpdatedTimestamp (After time.increase) ===', String(lastUpdatedTimestamp))
+                timestampAfterTimeIncrease = await time.latest()
+                console.log('=== Timestamp (After time.increase) ===', String(timestampAfterTimeIncrease))
                 console.log('=== days(30) ===', String(days(30)))
 
                 await geyser.update({ from: deployer })
