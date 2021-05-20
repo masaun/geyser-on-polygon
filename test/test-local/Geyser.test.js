@@ -158,7 +158,8 @@ contract("Geyser", function(accounts) {
                 const amount = toWei("10")
                 const calldata = []
 
-                let txReceipt = await geyser.unstake(amount, calldata, { from: deployer })
+                /// [Note]: There are 2 unstake() methods in the Geyser.sol. Therefore, how to use method below is used
+                let txReceipt = await geyser.methods["unstake(uint256,bytes)"](amount, calldata, { from: deployer })
             })
         })
 
