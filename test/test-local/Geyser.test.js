@@ -150,9 +150,14 @@ contract("Geyser", function(accounts) {
                 let txReceipt2 = await geyser.stake(lpAmount, calldata, { from: deployer })
             })
 
-            it("Check the last updated-timestamp", async () => {
+            it("lastUpdated()", async () => {
                 let _lastUpdated = await geyser.lastUpdated()
                 console.log('=== geyser.lastUpdated() ===', String(_lastUpdated))
+            })
+
+            it("totalStakingShareSeconds", async () => {
+                let _totalStakingShareSeconds = await geyser.totalStakingShareSeconds()
+                console.log('=== totalStakingShareSeconds ===', totalStakingShareSeconds)
             })
 
             it("time increase 30 days", async () => {
