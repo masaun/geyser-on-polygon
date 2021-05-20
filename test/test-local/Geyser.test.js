@@ -152,6 +152,7 @@ contract("Geyser", function(accounts) {
 
             it("time increase 30 days", async () => {
                 await time.increase(days(30))
+                await geyser.update({ from: deployer })
             })
 
             it("unstake() - unstake 10 LP tokens", async () => {
