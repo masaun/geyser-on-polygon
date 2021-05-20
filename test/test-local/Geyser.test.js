@@ -96,6 +96,13 @@ contract("Geyser", function(accounts) {
             console.log("=== GEYSER_TOKEN ===", GEYSER_TOKEN)
             console.log("=== GEYSER_FACTORY ===", GEYSER_FACTORY)
         })
+
+        it("Transfer 1000 UNI-V2 LP Tokens into user1 and user2", async () => {
+            const amount = toWei("1000")
+            let txReceipt1 = lpToken.transfer(user1, amount, { from: deployer })
+            let txReceipt2 = lpToken.transfer(user2, amount, { from: deployer })
+        })        
+
     })
 
     describe("Workflow of GeyserFactory.sol", () => {
@@ -153,14 +160,14 @@ contract("Geyser", function(accounts) {
             let txReceipt2 = await geyser.stake(lpAmount, calldata, { from: deployer })
 
             /// user1 stakes 10 LP tokens at 20 days
-            // await time.increase(days(20))
-            // let txReceipt3 = await lpToken.approve(GEYSER, lpAmount, { from: user1 })
-            // let txReceipt4 = await geyser.stake(lpAmount, calldata, { from: user1 })
+            await time.increase(days(20))
+            let txReceipt3 = await lpToken.approve(GEYSER, lpAmount, { from: user1 })
+            let txReceipt4 = await geyser.stake(lpAmount, calldata, { from: user1 })
 
             /// user2 stakes 10 LP tokens at 30 days
-            // await time.increase(days(30))
-            // let txReceipt5 = await lpToken.approve(GEYSER, lpAmount, { from: user2 })
-            // let txReceipt6 = await geyser.stake(lpAmount, calldata, { from: user2 })
+            await time.increase(days(30))
+            let txReceipt5 = await lpToken.approve(GEYSER, lpAmount, { from: user2 })
+            let txReceipt6 = await geyser.stake(lpAmount, calldata, { from: user2 })
         })
 
         it("lastUpdated()", async () => {
