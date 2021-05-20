@@ -96,95 +96,106 @@ contract("Geyser", function(accounts) {
             console.log("=== GEYSER_TOKEN ===", GEYSER_TOKEN)
             console.log("=== GEYSER_FACTORY ===", GEYSER_FACTORY)
         })
+    })
 
-        describe("Workflow of GeyserFactory.sol", () => {
-            it("create() - create a new Geyser", async () => {
-                const stakingToken = LP_TOKEN
-                const rewardToken = REWARD_TOKEN
-                const bonusMin = bonus(0.0)
-                const bonusMax = bonus(1.0)
-                const bonusPeriod = days(365)
-                let txReceipt = await geyserFactory.create(stakingToken, 
-                                                           rewardToken, 
-                                                           bonusMin, 
-                                                           bonusMax, 
-                                                           bonusPeriod, 
-                                                           { from: deployer })
+    describe("Workflow of GeyserFactory.sol", () => {
+        it("create() - create a new Geyser", async () => {
+            const stakingToken = LP_TOKEN
+            const rewardToken = REWARD_TOKEN
+            const bonusMin = bonus(0.0)
+            const bonusMax = bonus(1.0)
+            const bonusPeriod = days(365)
+            let txReceipt = await geyserFactory.create(stakingToken, 
+                                                       rewardToken, 
+                                                       bonusMin, 
+                                                       bonusMax, 
+                                                       bonusPeriod, 
+                                                       { from: deployer })
 
-                /// Retrive emitted-event
-                let event = await getEvents(geyserFactory, "GeyserCreated")
-                console.log("=== emitted-event: GeyserCreated ===", event)
+            /// Retrive emitted-event
+            let event = await getEvents(geyserFactory, "GeyserCreated")
+            console.log("=== emitted-event: GeyserCreated ===", event)
 
-                /// Create the Geyser contract instance
-                GEYSER = event.geyser
-                geyser = await Geyser.at(GEYSER)
-                console.log("=== GEYSER ===", GEYSER)
-                //console.log('=== geyser ===', geyser)
-            })
-
-            it("count()", async () => {
-                /// [Return]: total number of Geysers created by the factory
-                let totalNumberOfGeysers = await geyserFactory.count()
-                console.log("=== total number of Geysers created by the factory ===", String(totalNumberOfGeysers))
-            })
+            /// Create the Geyser contract instance
+            GEYSER = event.geyser
+            geyser = await Geyser.at(GEYSER)
+            console.log("=== GEYSER ===", GEYSER)
+            //console.log('=== geyser ===', geyser)
         })
 
-        describe("Workflow of Geyser.sol", () => {
-            it("A owner funds 100 RewardTokens to the Geyser", async () => {
-                let rewardTokenBalance = await rewardToken.balanceOf(deployer)
-                console.log("=== rewardTokenBalance ===", fromWei(rewardTokenBalance))
+        it("count()", async () => {
+            /// [Return]: total number of Geysers created by the factory
+            let totalNumberOfGeysers = await geyserFactory.count()
+            console.log("=== total number of Geysers created by the factory ===", String(totalNumberOfGeysers))
+        })
+    })
 
-                // owner funds geyser
-                const rewardTokenAmount = toWei("1000")
-                const duration = days(180)
-                let txReceipt1 = await rewardToken.approve(GEYSER, rewardTokenAmount, { from: deployer })
-                let txReceipt2 = await geyser.methods["fund(uint256,uint256)"](rewardTokenAmount, duration, { from: deployer })
-            })
+    describe("Workflow of Geyser.sol", () => {
+        it("A owner funds 100 RewardTokens to the Geyser", async () => {
+            let rewardTokenBalance = await rewardToken.balanceOf(deployer)
+            console.log("=== rewardTokenBalance ===", fromWei(rewardTokenBalance))
 
-            it("stake() - stake 10 LP tokens", async () => {
-                const lpAmount = toWei("10")
-                const calldata = []
-
-                /// [Note]: LP token is staking token
-                let txReceipt1 = await lpToken.approve(GEYSER, lpAmount, { from: deployer })
-                let txReceipt2 = await geyser.stake(lpAmount, calldata, { from: deployer })
-            })
-
-            it("lastUpdated()", async () => {
-                let _lastUpdated = await geyser.lastUpdated()
-                console.log('=== geyser.lastUpdated() ===', String(_lastUpdated))
-            })
-
-            it("totalStakingShareSeconds", async () => {
-                let _totalStakingShareSeconds = await geyser.totalStakingShareSeconds()
-                console.log('=== totalStakingShareSeconds ===', totalStakingShareSeconds)
-            })
-
-            it("time increase 30 days", async () => {
-                let timestampBeforeTimeIncrease = await time.latest()
-                console.log('=== Timestamp (Before time.increase) ===', String(timestampBeforeTimeIncrease))
-
-                /// Advance time 30 days
-                await time.increase(days(30))             /// Original
-                //await time.increase(60 * 60 * 24 * 30)  /// 30 days
-
-                /// Check timestamp (Before -> After)
-                timestampAfterTimeIncrease = await time.latest()
-                console.log('=== Timestamp (After time.increase) ===', String(timestampAfterTimeIncrease))
-                console.log('=== days(30) ===', String(days(30)))
-
-                await geyser.update({ from: deployer })
-            })
-
-            it("unstake() - unstake 10 LP tokens", async () => {
-                const lpAmount = toWei("10")
-                const calldata = []
-
-                /// [Note]: There are 2 unstake() methods in the Geyser.sol. Therefore, how to use method below is used
-                let txReceipt = await geyser.methods["unstake(uint256,bytes)"](lpAmount, calldata, { from: deployer })
-            })
+            // owner funds geyser
+            const rewardTokenAmount = toWei("1000")
+            const duration = days(180)
+            let txReceipt1 = await rewardToken.approve(GEYSER, rewardTokenAmount, { from: deployer })
+            let txReceipt2 = await geyser.methods["fund(uint256,uint256)"](rewardTokenAmount, duration, { from: deployer })
         })
 
+        it("stake() - stake 10 LP tokens", async () => {
+            const lpAmount = toWei("10")
+            const calldata = []
+
+            /// [Note]: LP token is staking token
+            /// deployer stakes 10 LP tokens at 10 days
+            await time.increase(days(10))
+            let txReceipt1 = await lpToken.approve(GEYSER, lpAmount, { from: deployer })
+            let txReceipt2 = await geyser.stake(lpAmount, calldata, { from: deployer })
+
+            /// user1 stakes 10 LP tokens at 20 days
+            // await time.increase(days(20))
+            // let txReceipt3 = await lpToken.approve(GEYSER, lpAmount, { from: user1 })
+            // let txReceipt4 = await geyser.stake(lpAmount, calldata, { from: user1 })
+
+            /// user2 stakes 10 LP tokens at 30 days
+            // await time.increase(days(30))
+            // let txReceipt5 = await lpToken.approve(GEYSER, lpAmount, { from: user2 })
+            // let txReceipt6 = await geyser.stake(lpAmount, calldata, { from: user2 })
+        })
+
+        it("lastUpdated()", async () => {
+            let _lastUpdated = await geyser.lastUpdated()
+            console.log('=== geyser.lastUpdated() ===', String(_lastUpdated))
+        })
+
+        it("totalStakingShareSeconds", async () => {
+            let _totalStakingShareSeconds = await geyser.totalStakingShareSeconds()
+            console.log('=== totalStakingShareSeconds ===', totalStakingShareSeconds)
+        })
+
+        it("time increase 30 days", async () => {
+            let timestampBeforeTimeIncrease = await time.latest()
+            console.log('=== Timestamp (Before time.increase) ===', String(timestampBeforeTimeIncrease))
+
+            /// Advance time 30 days
+            await time.increase(days(30))             /// Original
+            //await time.increase(60 * 60 * 24 * 30)  /// 30 days
+
+            /// Check timestamp (Before -> After)
+            timestampAfterTimeIncrease = await time.latest()
+            console.log('=== Timestamp (After time.increase) ===', String(timestampAfterTimeIncrease))
+            console.log('=== days(30) ===', String(days(30)))
+
+            await geyser.update({ from: deployer })
+        })
+
+        it("unstake() - unstake 10 LP tokens", async () => {
+            const lpAmount = toWei("10")
+            const calldata = []
+
+            /// [Note]: There are 2 unstake() methods in the Geyser.sol. Therefore, how to use method below is used
+            let txReceipt = await geyser.methods["unstake(uint256,bytes)"](lpAmount, calldata, { from: deployer })
+        })
     })
 
 })
