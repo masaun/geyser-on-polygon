@@ -151,7 +151,18 @@ contract("Geyser", function(accounts) {
             })
 
             it("time increase 30 days", async () => {
-                await time.increase(days(30))
+                let lastUpdatedTimestamp = await time.latest()
+                console.log('=== lastUpdatedTimestamp (Before time.increase) ===', String(lastUpdatedTimestamp))
+
+                /// Advance time 30 days
+                await time.increase(days(30))             /// Original
+                //await time.increase(60 * 60 * 24 * 30)  /// 30 days
+
+                /// Check timestamp (Before -> After)
+                lastUpdatedTimestamp = await time.latest()
+                console.log('=== lastUpdatedTimestamp (After time.increase) ===', String(lastUpdatedTimestamp))
+                console.log('=== days(30) ===', String(days(30)))
+
                 await geyser.update({ from: deployer })
             })
 
