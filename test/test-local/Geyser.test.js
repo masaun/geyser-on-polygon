@@ -135,19 +135,19 @@ contract("Geyser", function(accounts) {
                 console.log("=== rewardTokenBalance ===", fromWei(rewardTokenBalance))
 
                 // owner funds geyser
-                const amount = toWei("100")
+                const rewardTokenAmount = toWei("1000")
                 const duration = days(180)
-                let txReceipt1 = await rewardToken.approve(GEYSER, amount, { from: deployer })
-                let txReceipt2 = await geyser.methods["fund(uint256,uint256)"](amount, duration, { from: deployer })
+                let txReceipt1 = await rewardToken.approve(GEYSER, rewardTokenAmount, { from: deployer })
+                let txReceipt2 = await geyser.methods["fund(uint256,uint256)"](rewardTokenAmount, duration, { from: deployer })
             })
 
             it("stake() - stake 10 LP tokens", async () => {
-                const amount = toWei("10")
+                const lpAmount = toWei("10")
                 const calldata = []
 
                 /// [Note]: LP token is staking token
-                let txReceipt1 = await lpToken.approve(GEYSER, amount, { from: deployer })
-                let txReceipt2 = await geyser.stake(amount, calldata, { from: deployer })
+                let txReceipt1 = await lpToken.approve(GEYSER, lpAmount, { from: deployer })
+                let txReceipt2 = await geyser.stake(lpAmount, calldata, { from: deployer })
             })
 
             it("time increase 30 days", async () => {
@@ -155,11 +155,11 @@ contract("Geyser", function(accounts) {
             })
 
             it("unstake() - unstake 10 LP tokens", async () => {
-                const amount = toWei("10")
+                const lpAmount = toWei("10")
                 const calldata = []
 
                 /// [Note]: There are 2 unstake() methods in the Geyser.sol. Therefore, how to use method below is used
-                let txReceipt = await geyser.methods["unstake(uint256,bytes)"](amount, calldata, { from: deployer })
+                let txReceipt = await geyser.methods["unstake(uint256,bytes)"](lpAmount, calldata, { from: deployer })
             })
         })
 

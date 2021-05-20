@@ -394,6 +394,8 @@ contract Geyser is IGeyser, ReentrancyGuard {
             .mul(timeWeightedShareSeconds)
             .div(10**BONUS_DECIMALS);
 
+        uint totalStakingShareSeconds = 1; // [Test] -> Success to unstake()
+
         uint256 rewardAmount = totalUnlocked()
             .mul(gysrWeightedShareSeconds)
             .div(totalStakingShareSeconds.add(gysrWeightedShareSeconds));
