@@ -98,7 +98,7 @@ contract("Geyser", function(accounts) {
         })
 
         describe("Workflow of GeyserFactory.sol", () => {
-            it("create()", async () => {
+            it("create() - create a new Geyser", async () => {
                 const stakingToken = LP_TOKEN
                 const rewardToken = REWARD_TOKEN
                 const bonusMin = bonus(0.0)
@@ -141,7 +141,7 @@ contract("Geyser", function(accounts) {
                 let txReceipt2 = await geyser.methods["fund(uint256,uint256)"](amount, duration, { from: deployer })
             })
 
-            it("stake()", async () => {
+            it("stake() - stake 10 LP tokens", async () => {
                 const amount = toWei("10")
                 const calldata = []
 
@@ -154,7 +154,7 @@ contract("Geyser", function(accounts) {
                 await time.increase(days(30))
             })
 
-            it("unstake()", async () => {
+            it("unstake() - unstake 10 LP tokens", async () => {
                 const amount = toWei("10")
                 const calldata = []
 
