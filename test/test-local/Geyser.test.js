@@ -184,9 +184,14 @@ contract("Geyser", function(accounts) {
             console.log('=== geyser.lastUpdated() ===', String(_lastUpdated))
         })
 
+        it("totalStakingShares", async () => {
+            let _totalStakingShares = await geyser.totalStakingShares()
+            console.log('=== totalStakingShares ===', fromWei(_totalStakingShares))
+        })
+
         it("totalStakingShareSeconds", async () => {
             let _totalStakingShareSeconds = await geyser.totalStakingShareSeconds()
-            console.log('=== totalStakingShareSeconds ===', totalStakingShareSeconds)
+            console.log('=== totalStakingShareSeconds ===', fromWei(totalStakingShareSeconds))
         })
 
         it("time increase 30 days", async () => {
