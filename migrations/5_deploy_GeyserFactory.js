@@ -4,5 +4,5 @@ const GeyserToken = artifacts.require("GeyserToken")
 const GEYSER_TOKEN = GeyserToken.address
 
 module.exports = async function(deployer) {
-    await deployer.deploy(GEYSER_TOKEN, GeyserFactory)
+    await deployer.deploy(GeyserFactory, GEYSER_TOKEN)
 }
