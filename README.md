@@ -60,9 +60,13 @@ $ ganache-cli -d --fork https://kovan.infura.io/v3/{YOUR INFURA KEY OF KOVAN}
 <br>
 
 - 2: Execute test of the smart-contracts (on the local)
-  - [Main test]: Test for the GeyserFactory contract  
+  - Test for the GeyserFactory contract  
     `$ npm run test:GeyserFactory`  
     ($ truffle test ./test/test-local/GeyserFactory.test.js) 
+
+  - Test for the Geyser contract  
+    `$ npm run test:Geyser`  
+    ($ truffle test ./test/test-local/Geyser.test.js) 
 
 <br>
 
