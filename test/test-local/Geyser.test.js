@@ -159,15 +159,24 @@ contract("Geyser", function(accounts) {
             let txReceipt1 = await lpToken.approve(GEYSER, lpAmount, { from: deployer })
             let txReceipt2 = await geyser.stake(lpAmount, calldata, { from: deployer })
 
+            /// Update
+            await geyser.update({ from: deployer })
+
             /// user1 stakes 10 LP tokens at 20 days
             await time.increase(days(20))
             let txReceipt3 = await lpToken.approve(GEYSER, lpAmount, { from: user1 })
             let txReceipt4 = await geyser.stake(lpAmount, calldata, { from: user1 })
 
+            /// Update
+            await geyser.update({ from: deployer })
+
             /// user2 stakes 10 LP tokens at 30 days
             await time.increase(days(30))
             let txReceipt5 = await lpToken.approve(GEYSER, lpAmount, { from: user2 })
             let txReceipt6 = await geyser.stake(lpAmount, calldata, { from: user2 })
+
+            /// Update
+            await geyser.update({ from: deployer })
         })
 
         it("lastUpdated()", async () => {
@@ -207,15 +216,13 @@ contract("Geyser", function(accounts) {
             const gysrAmount = toWei("1")
             const calldata = []
 
-            /// [Note]: LP token is staking token
-            /// deployer stakes 10 LP tokens at 10 days
-            await time.increase(days(10))
-            let txReceipt1 = await lpToken.approve(GEYSER, lpAmount, { from: deployer })
-            let txReceipt2 = await geyser.stake(lpAmount, calldata, { from: deployer })
+            /// Check last update
+            let _lastUpdated = await geyser.lastUpdated()
+            console.log('=== lastUpdated (Just before unstake) ===', String(_lastUpdated))
 
-            /// Advance time 10 days            
-            await time.increase(days(10))
-            await geyser.update({ from: deployer })
+            /// Check timestamp
+            timestampJustBeforeUnstake = await time.latest()
+            console.log('=== Timestamp (Just before unstake) ===', String(timestampJustBeforeUnstake))
 
             /// [Note]: There are 2 unstake() methods in the Geyser.sol. Therefore, how to use method below is used
             let txReceipt = await geyser.methods["unstake(uint256,uint256,bytes)"](lpAmount, gysrAmount, calldata, { from: deployer })
