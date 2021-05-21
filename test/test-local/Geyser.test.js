@@ -196,18 +196,29 @@ contract("Geyser", function(accounts) {
             await geyser.update({ from: deployer })
         })
 
-        it("preview()", async () => {
-            const lpAmount = toWei("10")
-            let _preview = await geyser.preview(deployer, lpAmount, 0)
-            console.log('=== preview() ===', String(_preview))
-        })
+        // it("preview()", async () => {
+        //     const lpAmount = toWei("10")
+        //     let _preview = await geyser.preview(deployer, lpAmount, 0)
+        //     console.log('=== preview() ===', String(_preview))
+        // })
 
         it("unstake() - unstake 10 LP tokens", async () => {
             const lpAmount = toWei("10")
+            const gysrAmount = toWei("1")
             const calldata = []
 
+            /// [Note]: LP token is staking token
+            /// deployer stakes 10 LP tokens at 10 days
+            await time.increase(days(10))
+            let txReceipt1 = await lpToken.approve(GEYSER, lpAmount, { from: deployer })
+            let txReceipt2 = await geyser.stake(lpAmount, calldata, { from: deployer })
+
+            /// Advance time 10 days            
+            await time.increase(days(10))
+            await geyser.update({ from: deployer })
+
             /// [Note]: There are 2 unstake() methods in the Geyser.sol. Therefore, how to use method below is used
-            let txReceipt = await geyser.methods["unstake(uint256,bytes)"](lpAmount, calldata, { from: deployer })
+            let txReceipt = await geyser.methods["unstake(uint256,uint256,bytes)"](lpAmount, gysrAmount, calldata, { from: deployer })
         })
     })
 
