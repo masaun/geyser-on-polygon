@@ -44,7 +44,7 @@ $ npm run migrate:local
 
 <br>
 
-### ③ Test (Kovan testnet-fork approach)
+## 【Test】on Kovan (testnet-fork approach)
 - 1: Get API-key from Infura  
 https://infura.io/
 
@@ -67,6 +67,14 @@ $ ganache-cli -d --fork https://kovan.infura.io/v3/{YOUR INFURA KEY OF KOVAN}
   - Test for the Geyser contract  
     `$ npm run test:Geyser`  
     ($ truffle test ./test/test-local/Geyser.test.js) 
+
+<br>
+
+## 【Script】on Polygon (Matic)
+- In case of deploying smart contract on `Matic's Mumbai testnet`
+```
+$ npm run migrate:polygon_testnet
+```
 
 <br>
 
