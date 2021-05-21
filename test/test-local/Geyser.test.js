@@ -110,8 +110,8 @@ contract("Geyser", function(accounts) {
             const stakingToken = LP_TOKEN
             const rewardToken = REWARD_TOKEN
             const bonusMin = bonus(0.0)
-            const bonusMax = bonus(1.0)
-            const bonusPeriod = days(365)
+            const bonusMax = bonus(2.0)
+            const bonusPeriod = days(90)
             let txReceipt = await geyserFactory.create(stakingToken, 
                                                        rewardToken, 
                                                        bonusMin, 
@@ -194,6 +194,12 @@ contract("Geyser", function(accounts) {
             console.log('=== days(30) ===', String(days(30)))
 
             await geyser.update({ from: deployer })
+        })
+
+        it("preview()", async () => {
+            const lpAmount = toWei("10")
+            let _preview = await geyser.preview(deployer, lpAmount, 0)
+            console.log('=== preview() ===', String(_preview))
         })
 
         it("unstake() - unstake 10 LP tokens", async () => {
