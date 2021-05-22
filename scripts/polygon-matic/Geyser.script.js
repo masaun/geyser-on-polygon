@@ -22,13 +22,17 @@ const RewardToken = artifacts.require("RewardToken")
 //const Fancet = artifacts.require("Fancet")
 
 /// Deployed-contract addresses on Polygon testnet
-let GEYSER_FACTORY = contractAddressList["Polygon Mumbai Testnet"]["Geyser"]["GeyserFactory"]
-let GEYSER_TOKEN = tokenAddressList["Polygon Mumbai Testnet"]["Geyser"]["GeyserToken"]
-let LP_TOKEN = tokenAddressList["Polygon Mumbai Testnet"]["Geyser"]["LPToken"]
-let REWARD_TOKEN = tokenAddressList["Polygon Mumbai Testnet"]["Geyser"]["RewardToken"]
+//let GEYSER_FACTORY = contractAddressList["Polygon Mumbai Testnet"]["Geyser"]["GeyserFactory"]
+//let GEYSER_TOKEN = tokenAddressList["Polygon Mumbai Testnet"]["Geyser"]["GeyserToken"]
+//let LP_TOKEN = tokenAddressList["Polygon Mumbai Testnet"]["Geyser"]["LPToken"]
+//let REWARD_TOKEN = tokenAddressList["Polygon Mumbai Testnet"]["Geyser"]["RewardToken"]
 //let FANCET = contractAddressList["Polygon Mumbai Testnet"]["Geyser"]["Fancet"]
 
 /// Variable to assign a Geyser contract address
+let GEYSER_FACTORY
+let GEYSER_TOKEN
+let LP_TOKEN
+let REWARD_TOKEN
 let GEYSER
 
 /// Global contract instance
@@ -59,11 +63,11 @@ module.exports = function(callback) {
 };
 
 async function main() {
-    console.log("\n------------- Setup smart-contracts -------------")
-    await setUpSmartContracts()
+    console.log("\n------------- Set wallet addresses -------------")
+    await setWalletAddress()
 
-    console.log("\n------------- Check wallet addresses -------------")
-    await checkStateInAdvance()
+    console.log("\n------------- Deploy smart contracts -------------")
+    await DeploySmartContracts()
 
     // console.log("\n------------- Workflow of Fancet contract -------------")
     // await receiveTestTokens()
@@ -85,18 +89,39 @@ async function main() {
 ///-----------------------------------------------
 /// Methods
 ///-----------------------------------------------
-async function setUpSmartContracts() {
-    console.log("Create the Reward Token (mock) contract instance")
-    rewardToken = await RewardToken.at(REWARD_TOKEN)
+async function setWalletAddress() {
+    console.log("Wallet address should be assigned into deployer")
+    deployer = process.env.DEPLOYER_ADDRESS
+    //deployer = process.env.EXECUTOR_ADDRESS
 
-    console.log("Create the UNI-V2 LP Token (mock) contract instance")
-    lpToken = await LPToken.at(LP_TOKEN)
+    /// [Log]
+    console.log('=== deployer ===', deployer)
+}
 
-    console.log("Create the GeyserToken contract instance")
-    geyserToken = await GeyserToken.at(GEYSER_TOKEN)
+async function DeploySmartContracts() {
+    console.log("Deploy the Reward Token (mock) contract instance")
+    //console.log("Create the Reward Token (mock) contract instance")
+    rewardToken = await RewardToken.new({ from: deployer })
+    //rewardToken = await RewardToken.at(REWARD_TOKEN)
+    REWARD_TOKEN = rewardToken.address
 
-    console.log("Create the GeyserFactory contract instance")
-    geyserFactory = await GeyserFactory.at(GEYSER_FACTORY)
+    console.log("Deploy the UNI-V2 LP Token (mock) contract instance")
+    //console.log("Create the UNI-V2 LP Token (mock) contract instance")
+    lpToken = await LPToken.new({ from: deployer })
+    //lpToken = await LPToken.at(LP_TOKEN)
+    LP_TOKEN = lpToken.address
+
+    console.log("Deploy the GeyserToken contract instance")
+    //console.log("Create the GeyserToken contract instance")
+    geyserToken = await GeyserToken.new({ from: deployer })
+    //geyserToken = await GeyserToken.at(GEYSER_TOKEN)
+    GEYSER_TOKEN = geyserToken.address
+
+    console.log("Deploy the GeyserFactory contract instance")
+    //console.log("Create the GeyserFactory contract instance")
+    geyserFactory = await GeyserFactory.new(GEYSER_TOKEN, { from: deployer })
+    //geyserFactory = await GeyserFactory.at(GEYSER_FACTORY)
+    GEYSER_FACTORY = geyserFactory.address
 
     //console.log("Create the Fancet contract instance")
     //fancet = await Fancet.at(FANCET)
@@ -107,15 +132,6 @@ async function setUpSmartContracts() {
     console.log('=== GEYSER_TOKEN ===', GEYSER_TOKEN)
     console.log('=== GEYSER_FACTORY ===', GEYSER_FACTORY)
     //console.log('=== FANCET ===', FANCET)
-}
-
-async function checkStateInAdvance() {
-    console.log("Wallet address should be assigned into deployer")
-    deployer = process.env.DEPLOYER_ADDRESS
-    //deployer = process.env.EXECUTOR_ADDRESS
-
-    /// [Log]
-    console.log('=== deployer ===', deployer)
 }
 
 // async function receiveTestTokens() {
@@ -215,7 +231,7 @@ async function totalStakingShares() {
 // }
 
 async function unstake() {
-    console.log("\n unstake() - unstake 10 LP tokens")
+    console.log("\n unstake() - unstake 10 LP tokens and receive Reward tokens")
     
     const lpAmount = toWei("10")
     const gysrAmount = toWei("1")
