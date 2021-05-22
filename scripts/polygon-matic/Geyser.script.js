@@ -19,12 +19,14 @@ const GeyserFactory = artifacts.require("GeyserFactory")
 const GeyserToken = artifacts.require("GeyserToken")
 const LPToken = artifacts.require("LPToken")
 const RewardToken = artifacts.require("RewardToken")
+const Fancet = artifacts.require("Fancet")
 
 /// Deployed-contract addresses on Polygon testnet
 let GEYSER_FACTORY = contractAddressList["Polygon Mumbai Testnet"]["Geyser"]["GeyserFactory"]
 let GEYSER_TOKEN = tokenAddressList["Polygon Mumbai Testnet"]["Geyser"]["GeyserToken"]
 let LP_TOKEN = tokenAddressList["Polygon Mumbai Testnet"]["Geyser"]["LPToken"]
 let REWARD_TOKEN = tokenAddressList["Polygon Mumbai Testnet"]["Geyser"]["RewardToken"]
+let FANCET = contractAddressList["Polygon Mumbai Testnet"]["Geyser"]["Fancet"]
 
 /// Variable to assign a Geyser contract address
 let GEYSER
@@ -35,6 +37,7 @@ let geyserFactory
 let geyserToken
 let lpToken
 let rewardToken
+let fancet
 
 /// Acccounts
 let deployer
@@ -61,6 +64,9 @@ async function main() {
 
     console.log("\n------------- Check wallet addresses -------------")
     await checkStateInAdvance()
+
+    console.log("\n------------- Workflow of Fancet contract -------------")
+    await receiveTestTokens()
 
     console.log("\n------------- Workflow of GeyserFactory contract -------------")
     await createNewGeyser()
@@ -92,23 +98,34 @@ async function setUpSmartContracts() {
     console.log("Create the GeyserFactory contract instance")
     geyserFactory = await GeyserFactory.at(GEYSER_FACTORY)
 
+    console.log("Create the Fancet contract instance")
+    fancet = await Fancet.at(FANCET)
+
     /// Logs (each deployed-contract addresses)
     console.log('=== REWARD_TOKEN ===', REWARD_TOKEN)
     console.log('=== LP_TOKEN ===', LP_TOKEN)    
     console.log('=== GEYSER_TOKEN ===', GEYSER_TOKEN)
     console.log('=== GEYSER_FACTORY ===', GEYSER_FACTORY)
+    console.log('=== FANCET ===', FANCET)
 }
 
 async function checkStateInAdvance() {
     console.log("Wallet address should be assigned into deployer")
     deployer = process.env.DEPLOYER_ADDRESS
+    //deployer = process.env.EXECUTOR_ADDRESS
 
     /// [Log]
     console.log('=== deployer ===', deployer)
 }
 
+async function receiveTestTokens() {
+    let txReceipt1 = await fancet.transferLPToken({ from: deployer })
+    let txReceipt2 = await fancet.transferRewardToken({ from: deployer })
+    let txReceipt3 = await fancet.transferGeyserToken({ from: deployer })
+}
+
 async function createNewGeyser() {
-    console.log("\n create() - create a new Geyser");
+    console.log("\n create() - create a new Geyser")
 
     const stakingToken = LP_TOKEN
     const rewardToken = REWARD_TOKEN
