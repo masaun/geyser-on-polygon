@@ -167,10 +167,10 @@ async function stake() {
     let txReceipt1 = await lpToken.approve(GEYSER, lpAmount, { from: deployer })
     let txReceipt2 = await geyser.stake(lpAmount, calldata, { from: deployer })
     console.log('=== Tx hash of stake() ===', txReceipt2.tx)
-    console.log('=== txReceipt of stake() ===', txReceipt2)
 
     /// Retrive emitted-event
-    let event = await getEvents(geyser, "Staked")
+    let event1 = await getEvents(geyser, "RewardsUnlocked")
+    let event2 = await getEvents(geyser, "Staked")
 
     /// Update
     await geyser.update({ from: deployer })
