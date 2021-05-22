@@ -83,7 +83,7 @@ async function setUpSmartContracts() {
     geyserToken = await GeyserToken.at(GEYSER_TOKEN)
 
     console.log("Create the GeyserFactory contract instance")
-    geyserFactory = await GeyserFactory.at(GEYSER_TOKEN)
+    geyserFactory = await GeyserFactory.at(GEYSER_FACTORY)
 
     /// Logs (each deployed-contract addresses)
     console.log('=== REWARD_TOKEN ===', REWARD_TOKEN)
@@ -101,13 +101,17 @@ async function checkStateInAdvance() {
 }
 
 async function createNewGeyser() {
-    console.log("create() - create a new Geyser");
+    console.log("\n create() - create a new Geyser");
 
     const stakingToken = LP_TOKEN
     const rewardToken = REWARD_TOKEN
     const bonusMin = bonus(0.0)
     const bonusMax = bonus(2.0)
     const bonusPeriod = days(90)
+    //console.log("=== bonusMin ===", fromWei(bonusMin))
+    //console.log("=== bonusMax ===", fromWei(bonusMax))
+    //console.log("=== bonusPeriod ===", String(bonusPeriod))
+
     let txReceipt = await geyserFactory.create(stakingToken, 
                                                rewardToken, 
                                                bonusMin, 
@@ -127,7 +131,7 @@ async function createNewGeyser() {
 }
 
 async function count() {
-    console.log("count() - total number of Geysers created by the factory");
+    console.log("\n count() - total number of Geysers created by the factory");
     /// [Return]: total number of Geysers created by the factory
     let totalNumberOfGeysers = await geyserFactory.count()
     console.log("=== total number of Geysers created by the factory ===", String(totalNumberOfGeysers))
