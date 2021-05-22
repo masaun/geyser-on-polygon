@@ -72,7 +72,6 @@ async function main() {
     await lastUpdated()
     await totalStakingShares()
     await totalStakingShareSeconds()
-    await timeIncrease()
     await unstake()
 }
 
@@ -165,8 +164,7 @@ async function stake() {
     const calldata = []
 
     /// [Note]: LP token is staking token
-    /// deployer stakes 10 LP tokens at 10 days
-    await time.increase(days(10))
+    /// deployer stakes 10 LP tokens
     let txReceipt1 = await lpToken.approve(GEYSER, lpAmount, { from: deployer })
     let txReceipt2 = await geyser.stake(lpAmount, calldata, { from: deployer })
 
@@ -195,24 +193,6 @@ async function totalStakingShareSeconds() {
     console.log('=== totalStakingShareSeconds ===', fromWei(totalStakingShareSeconds))
 }
 
-async function timeIncrease() {
-    console.log("\n time increase 30 days()");
-    
-    let timestampBeforeTimeIncrease = await time.latest()
-    console.log('=== Timestamp (Before time.increase) ===', String(timestampBeforeTimeIncrease))
-
-    /// Advance time 30 days
-    await time.increase(days(30))             /// Original
-    //await time.increase(60 * 60 * 24 * 30)  /// 30 days
-
-    /// Check timestamp (Before -> After)
-    timestampAfterTimeIncrease = await time.latest()
-    console.log('=== Timestamp (After time.increase) ===', String(timestampAfterTimeIncrease))
-    console.log('=== days(30) ===', String(days(30)))
-
-    await geyser.update({ from: deployer })
-}
-
 async function unstake() {
     console.log("\n unstake() - unstake 10 LP tokens")
     
@@ -225,7 +205,7 @@ async function unstake() {
     console.log('=== lastUpdated (Just before unstake) ===', String(_lastUpdated))
 
     /// Check timestamp
-    timestampJustBeforeUnstake = await time.latest()
+    timestampJustBeforeUnstake = await getCurrentTimestamp()
     console.log('=== Timestamp (Just before unstake) ===', String(timestampJustBeforeUnstake))
 
     /// [Note]: There are 2 unstake() methods in the Geyser.sol. Therefore, how to use method below is used
@@ -259,6 +239,12 @@ async function getEvents(contractInstance, eventName) {
 async function getCurrentBlock() {
     const currentBlock = await web3.eth.getBlockNumber()
     return currentBlock
+}
+
+async function getCurrentTimestamp() {
+    const currentBlock = await web3.eth.getBlockNumber()
+    const currentTimestamp = await web3.eth.getBlock(currentBlock).timestamp
+    return currentTimestamp
 }
 
 
