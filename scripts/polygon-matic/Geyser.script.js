@@ -128,7 +128,6 @@ async function createNewGeyser() {
 
     /// Retrive emitted-event
     let event = await getEvents(geyserFactory, "GeyserCreated")
-    console.log("=== emitted-event: GeyserCreated ===", event)
 
     /// Create the Geyser contract instance
     GEYSER = event.geyser
@@ -167,6 +166,11 @@ async function stake() {
     /// deployer stakes 10 LP tokens
     let txReceipt1 = await lpToken.approve(GEYSER, lpAmount, { from: deployer })
     let txReceipt2 = await geyser.stake(lpAmount, calldata, { from: deployer })
+    console.log('=== Tx hash of stake() ===', txReceipt2.tx)
+    console.log('=== txReceipt of stake() ===', txReceipt2)
+
+    /// Retrive emitted-event
+    let event = await getEvents(geyser, "Staked")
 
     /// Update
     await geyser.update({ from: deployer })
@@ -200,16 +204,14 @@ async function unstake() {
     const gysrAmount = toWei("1")
     const calldata = []
 
-    /// Check last update
-    let _lastUpdated = await geyser.lastUpdated()
-    console.log('=== lastUpdated (Just before unstake) ===', String(_lastUpdated))
-
-    /// Check timestamp
-    timestampJustBeforeUnstake = await getCurrentTimestamp()
-    console.log('=== Timestamp (Just before unstake) ===', timestampJustBeforeUnstake)
-
     /// [Note]: There are 2 unstake() methods in the Geyser.sol. Therefore, how to use method below is used
     let txReceipt = await geyser.methods["unstake(uint256,bytes)"](lpAmount, calldata, { from: deployer })
+    console.log('=== Tx hash of unstake() ===', txReceipt.tx)
+
+    /// Retrive emitted-event
+    let event1 = await getEvents(geyser, "RewardsUnlocked")
+    let event2 = await getEvents(geyser, "Unstaked")
+    let event3 = await getEvents(geyser, "RewardsDistributed")
 }
 
 
@@ -228,7 +230,7 @@ async function getEvents(contractInstance, eventName) {
         //fromBlock: 0,
         toBlock: 'latest'
     })
-    console.log(`\n=== [Event log]: ${ eventName } ===`, events[0].returnValues)
+    console.log(`\n=== [Event log emitted]: ${ eventName } ===`, events[0].returnValues)
     return events[0].returnValues
 } 
 
@@ -244,6 +246,7 @@ async function getCurrentBlock() {
 async function getCurrentTimestamp() {
     const currentBlock = await web3.eth.getBlockNumber()
     const currentTimestamp = await web3.eth.getBlock(currentBlock).timestamp
+
     return currentTimestamp
 }
 
