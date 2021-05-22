@@ -71,7 +71,7 @@ async function main() {
     await stake()
     await lastUpdated()
     await totalStakingShares()
-    await totalStakingShareSeconds()
+    //await totalStakingShareSeconds()
     await unstake()
 }
 
@@ -186,12 +186,12 @@ async function totalStakingShares() {
     console.log('=== totalStakingShares ===', fromWei(_totalStakingShares))
 }
  
-async function totalStakingShareSeconds() {
-    console.log("\n totalStakingShareSeconds()");
+// async function totalStakingShareSeconds() {
+//     console.log("\n totalStakingShareSeconds()");
     
-    let _totalStakingShareSeconds = await geyser.totalStakingShareSeconds()
-    console.log('=== totalStakingShareSeconds ===', fromWei(totalStakingShareSeconds))
-}
+//     let _totalStakingShareSeconds = await geyser.totalStakingShareSeconds()
+//     console.log('=== totalStakingShareSeconds ===', fromWei(totalStakingShareSeconds))
+// }
 
 async function unstake() {
     console.log("\n unstake() - unstake 10 LP tokens")
