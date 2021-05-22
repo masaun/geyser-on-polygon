@@ -206,10 +206,10 @@ async function unstake() {
 
     /// Check timestamp
     timestampJustBeforeUnstake = await getCurrentTimestamp()
-    console.log('=== Timestamp (Just before unstake) ===', String(timestampJustBeforeUnstake))
+    console.log('=== Timestamp (Just before unstake) ===', timestampJustBeforeUnstake)
 
     /// [Note]: There are 2 unstake() methods in the Geyser.sol. Therefore, how to use method below is used
-    let txReceipt = await geyser.methods["unstake(uint256,uint256,bytes)"](lpAmount, gysrAmount, calldata, { from: deployer })
+    let txReceipt = await geyser.methods["unstake(uint256,bytes)"](lpAmount, calldata, { from: deployer })
 }
 
 
