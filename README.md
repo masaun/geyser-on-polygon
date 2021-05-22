@@ -76,7 +76,13 @@ $ ganache-cli -d --fork https://kovan.infura.io/v3/{YOUR INFURA KEY OF KOVAN}
 
 <br>
 
-## 【Migrate】on Polygon (Matic)
+## 【Script】on Polygon (Matic)
+- In advance, Please check `MATIC token balance` of `executor's wallet address` .
+  - Idealy, MATIC tokens balance is more than `1 MATIC` .
+  - Matic fancet: https://faucet.matic.network/ (Please select Mumbai network)
+
+<br>
+
 - In case of deploying smart contract on `Matic's Mumbai testnet`
 ```
 $ npm run script:Geyser
