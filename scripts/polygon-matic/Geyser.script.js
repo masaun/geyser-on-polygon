@@ -62,10 +62,18 @@ async function main() {
     console.log("\n------------- Check wallet addresses -------------")
     await checkStateInAdvance()
 
-    console.log("\n------------- Workflow of GeyserFactory contract -------------");
+    console.log("\n------------- Workflow of GeyserFactory contract -------------")
     await createNewGeyser()
     await count()
 
+    console.log("\n------------- Workflow of Geyser contract -------------")
+    await fund()
+    await stake()
+    await lastUpdated()
+    await totalStakingShares()
+    await totalStakingShareSeconds()
+    await timeIncrease()
+    await unstake()
 }
 
 
@@ -137,7 +145,92 @@ async function count() {
     console.log("=== total number of Geysers created by the factory ===", String(totalNumberOfGeysers))
 }
 
+async function fund() {
+    console.log("\n A owner funds 100 RewardTokens to the Geyser");
 
+    let rewardTokenBalance = await rewardToken.balanceOf(deployer)
+    console.log("=== rewardTokenBalance ===", fromWei(rewardTokenBalance))
+
+    // owner funds geyser
+    const rewardTokenAmount = toWei("1000")
+    const duration = days(180)
+    let txReceipt1 = await rewardToken.approve(GEYSER, rewardTokenAmount, { from: deployer })
+    let txReceipt2 = await geyser.methods["fund(uint256,uint256)"](rewardTokenAmount, duration, { from: deployer })
+}
+
+async function stake() {
+    console.log("\n stake() - stake 10 LP tokens");
+
+    const lpAmount = toWei("10")
+    const calldata = []
+
+    /// [Note]: LP token is staking token
+    /// deployer stakes 10 LP tokens at 10 days
+    await time.increase(days(10))
+    let txReceipt1 = await lpToken.approve(GEYSER, lpAmount, { from: deployer })
+    let txReceipt2 = await geyser.stake(lpAmount, calldata, { from: deployer })
+
+    /// Update
+    await geyser.update({ from: deployer })
+}
+
+async function lastUpdated() {
+    console.log("\n lastUpdated()");
+    
+    let _lastUpdated = await geyser.lastUpdated()
+    console.log('=== geyser.lastUpdated() ===', String(_lastUpdated))
+}
+
+async function totalStakingShares() {
+    console.log("\n totalStakingShares()");
+    
+    let _totalStakingShares = await geyser.totalStakingShares()
+    console.log('=== totalStakingShares ===', fromWei(_totalStakingShares))
+}
+ 
+async function totalStakingShareSeconds() {
+    console.log("\n totalStakingShareSeconds()");
+    
+    let _totalStakingShareSeconds = await geyser.totalStakingShareSeconds()
+    console.log('=== totalStakingShareSeconds ===', fromWei(totalStakingShareSeconds))
+}
+
+async function timeIncrease() {
+    console.log("\n time increase 30 days()");
+    
+    let timestampBeforeTimeIncrease = await time.latest()
+    console.log('=== Timestamp (Before time.increase) ===', String(timestampBeforeTimeIncrease))
+
+    /// Advance time 30 days
+    await time.increase(days(30))             /// Original
+    //await time.increase(60 * 60 * 24 * 30)  /// 30 days
+
+    /// Check timestamp (Before -> After)
+    timestampAfterTimeIncrease = await time.latest()
+    console.log('=== Timestamp (After time.increase) ===', String(timestampAfterTimeIncrease))
+    console.log('=== days(30) ===', String(days(30)))
+
+    await geyser.update({ from: deployer })
+}
+
+async function unstake() {
+    console.log("\n unstake() - unstake 10 LP tokens")
+    
+    const lpAmount = toWei("10")
+    const gysrAmount = toWei("1")
+    const calldata = []
+
+    /// Check last update
+    let _lastUpdated = await geyser.lastUpdated()
+    console.log('=== lastUpdated (Just before unstake) ===', String(_lastUpdated))
+
+    /// Check timestamp
+    timestampJustBeforeUnstake = await time.latest()
+    console.log('=== Timestamp (Just before unstake) ===', String(timestampJustBeforeUnstake))
+
+    /// [Note]: There are 2 unstake() methods in the Geyser.sol. Therefore, how to use method below is used
+    let txReceipt = await geyser.methods["unstake(uint256,uint256,bytes)"](lpAmount, gysrAmount, calldata, { from: deployer })
+}
 
 
 
