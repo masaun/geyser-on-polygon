@@ -7,8 +7,9 @@
   },
   "scripts": {
     "test": "truffle test ./test/test-local/* --network local",
-    "test:Geyser": "truffle test ./test/test-local/Geyser.test.js",
-    "test:GeyserFactory": "truffle test ./test/test-local/GeyserFactory.test.js",
+    "test:Geyser": "truffle test ./test/test-local/Geyser.test.js --network local",
+    "test:GeyserFactory": "truffle test ./test/test-local/GeyserFactory.test.js --network local",
+    "script:Geyser": "truffle exec ./scripts/polygon-matic/Geyser.script.js --network polygon_testnet",
     "compile:local": "truffle compile --reset --network local",
     "migrate:local": "truffle migrate --reset --network local",
     "migrate:polygon_testnet": "truffle migrate --reset --network polygon_testnet"
