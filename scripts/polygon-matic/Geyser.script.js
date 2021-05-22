@@ -1,9 +1,13 @@
 require('dotenv').config()
 //const Tx = require('ethereumjs-tx').Transaction
 
+/// Web3 instance
 const Web3 = require('web3')
 const provider = new Web3.providers.HttpProvider(`https://goerli.infura.io/v3/${ process.env.INFURA_KEY }`)
 const web3 = new Web3(provider)
+
+/// Geyser's helper
+const { tokens, bonus, days, toFixedPointBigNumber, fromFixedPointBigNumber } = require('./geyser/util/helper')
 
 /// Import deployed-addresses
 const contractAddressList = require("../../migrations/addressesList/contractAddress/contractAddress.js")
