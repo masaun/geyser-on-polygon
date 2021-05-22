@@ -1,10 +1,11 @@
 module.exports = {
     "Mainnet": {
     },
-    "Kovan": {
-        "Liquity": {
-            "lusdToken": "0xDf9b28891c5573711f999113D6cbC9B6F958860c",
-            "lqtyToken": "0x2a24b1C2c12f38b39D3cC967cA6Dec9e783D0b0F"
+    "Polygon Mumbai Testnet": {
+        "Geyser": {
+            "RewardToken": "0xb319dB9874eB25708c18D744D4d0DF9C3D47933e",
+            "LPToken": "0xb9b31Bc2dDB4eD3C9CeFb7Ef0690C6b10Af6b4cA",
+            "GeyserToken": "0x27Fa30dd3767374988Ef9eDA0F1e37C51Dbc6061"
         }
     }
 }

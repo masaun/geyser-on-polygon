@@ -37,9 +37,15 @@ $ npm install
 
 <br>
 
-### ② Compile & migrate contracts (on local)
+### ② Compile & migrate contracts
+- on local
 ```
 $ npm run migrate:local
+```
+
+- on Polygon (Matic) mumbai testnet
+```
+$ npm run migrate:polygon_testnet
 ```
 
 <br>
@@ -70,10 +76,10 @@ $ ganache-cli -d --fork https://kovan.infura.io/v3/{YOUR INFURA KEY OF KOVAN}
 
 <br>
 
-## 【Script】on Polygon (Matic)
+## 【Migrate】on Polygon (Matic)
 - In case of deploying smart contract on `Matic's Mumbai testnet`
 ```
-$ npm run migrate:polygon_testnet
+$ npm run script:Geyser
 ```
 
 <br>
