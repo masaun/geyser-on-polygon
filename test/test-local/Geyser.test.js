@@ -6,7 +6,7 @@ const web3 = new Web3(new Web3.providers.WebsocketProvider('ws://localhost:8545'
 const { time } = require('@openzeppelin/test-helpers')
 
 /// Geyser's helper
-const { tokens, bonus, days, toFixedPointBigNumber, fromFixedPointBigNumber } = require('./geyser/util/helper');
+const { tokens, bonus, days, toFixedPointBigNumber, fromFixedPointBigNumber } = require('./geyser/util/helper')
 
 /// Import deployed-addresses
 const contractAddressList = require("../../migrations/addressesList/contractAddress/contractAddress.js")
@@ -130,7 +130,7 @@ contract("Geyser", function(accounts) {
             //console.log('=== geyser ===', geyser)
         })
 
-        it("count()", async () => {
+        it("count() - total number of Geysers created by the factory", async () => {
             /// [Return]: total number of Geysers created by the factory
             let totalNumberOfGeysers = await geyserFactory.count()
             console.log("=== total number of Geysers created by the factory ===", String(totalNumberOfGeysers))
