@@ -1,9 +1,13 @@
 require('dotenv').config()
 //const Tx = require('ethereumjs-tx').Transaction
 
-const Web3 = require('web3');
+/// Web3 instance
+const Web3 = require('web3')
 const provider = new Web3.providers.HttpProvider(`https://goerli.infura.io/v3/${ process.env.INFURA_KEY }`)
 const web3 = new Web3(provider)
+
+/// Geyser's helper
+const { tokens, bonus, days, toFixedPointBigNumber, fromFixedPointBigNumber } = require('./geyser/util/helper')
 
 /// Import deployed-addresses
 const contractAddressList = require("../../migrations/addressesList/contractAddress/contractAddress.js")
@@ -48,7 +52,7 @@ let deployer
 
 /// [Note]: For truffle exec (Remarks: Need to use module.exports)
 module.exports = function(callback) {
-    main().then(() => callback()).catch(err => callback(err));
+    main().then(() => callback()).catch(err => callback(err))
 };
 
 async function main() {
@@ -57,6 +61,10 @@ async function main() {
 
     console.log("\n------------- Check wallet addresses -------------")
     await checkStateInAdvance()
+
+    console.log("\n------------- Workflow of GeyserFactory contract -------------");
+    await createNewGeyser()
+    await count()
 
 }
 
@@ -68,14 +76,14 @@ async function setUpSmartContracts() {
     console.log("Create the Reward Token (mock) contract instance")
     rewardToken = await RewardToken.at(REWARD_TOKEN)
 
-    console.log("Create the UNI-V2 LP Token (mock) contract instance");
+    console.log("Create the UNI-V2 LP Token (mock) contract instance")
     lpToken = await LPToken.at(LP_TOKEN)
 
     console.log("Create the GeyserToken contract instance")
     geyserToken = await GeyserToken.at(GEYSER_TOKEN)
 
     console.log("Create the GeyserFactory contract instance")
-    geyserFactory = await GeyserFactory.at(GEYSER_TOKEN)
+    geyserFactory = await GeyserFactory.at(GEYSER_FACTORY)
 
     /// Logs (each deployed-contract addresses)
     console.log('=== REWARD_TOKEN ===', REWARD_TOKEN)
@@ -91,6 +99,46 @@ async function checkStateInAdvance() {
     /// [Log]
     console.log('=== deployer ===', deployer)
 }
+
+async function createNewGeyser() {
+    console.log("\n create() - create a new Geyser");
+
+    const stakingToken = LP_TOKEN
+    const rewardToken = REWARD_TOKEN
+    const bonusMin = bonus(0.0)
+    const bonusMax = bonus(2.0)
+    const bonusPeriod = days(90)
+    //console.log("=== bonusMin ===", fromWei(bonusMin))
+    //console.log("=== bonusMax ===", fromWei(bonusMax))
+    //console.log("=== bonusPeriod ===", String(bonusPeriod))
+
+    let txReceipt = await geyserFactory.create(stakingToken, 
+                                               rewardToken, 
+                                               bonusMin, 
+                                               bonusMax, 
+                                               bonusPeriod, 
+                                               { from: deployer })
+
+    /// Retrive emitted-event
+    let event = await getEvents(geyserFactory, "GeyserCreated")
+    console.log("=== emitted-event: GeyserCreated ===", event)
+
+    /// Create the Geyser contract instance
+    GEYSER = event.geyser
+    geyser = await Geyser.at(GEYSER)
+    console.log("=== GEYSER ===", GEYSER)
+    //console.log('=== geyser ===', geyser)
+}
+
+async function count() {
+    console.log("\n count() - total number of Geysers created by the factory");
+    /// [Return]: total number of Geysers created by the factory
+    let totalNumberOfGeysers = await geyserFactory.count()
+    console.log("=== total number of Geysers created by the factory ===", String(totalNumberOfGeysers))
+}
+
+
+
 
 
 ///--------------------------------------------
@@ -118,4 +166,16 @@ async function getEvents(contractInstance, eventName) {
 async function getCurrentBlock() {
     const currentBlock = await web3.eth.getBlockNumber()
     return currentBlock
+}
+
+
+///---------------------------------------------------------
+/// Methods for converting unit
+///---------------------------------------------------------
+function toWei(amount) {
+    return web3.utils.toWei(`${ amount }`, 'ether')
+} 
+
+function fromWei(amount) {
+    return web3.utils.fromWei(`${ amount }`, 'ether')
 }
