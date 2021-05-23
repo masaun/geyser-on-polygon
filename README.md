@@ -16,7 +16,7 @@
 ***
 
 ## 【Remarks】
-- Version for following the `Liquity` smart contract
+- Version for following the `Geyser` smart contract
   - Solidity (Solc): v0.6.11
   - Truffle: v5.1.60
   - web3.js: v1.2.9
@@ -50,15 +50,37 @@ $ npm run migrate:polygon_testnet
 
 <br>
 
-## 【Test】on Kovan (testnet-fork approach)
-- 1: Get API-key from Infura  
+## 【Script】on Polygon (Matic)
+- ① Get API-key from Infura  
 https://infura.io/
+
+
+- ② Add `.env` to the root directory.
+  - Please reference how to write from `.env.example` . (Please write 3 things below into `.env` )
+    - MNEMONIC (Mnemonic)  
+    - INFURA_KEY (Infura key)  
+    - DEPLOYER_ADDRESS (Deployer address)  
+      https://github.com/masaun/geyser-on-polygon/blob/main/.env.example
 
 <br>
 
-- 2: Start ganache-cli with kovan testnet-fork (using Infura Key of Kovan tesntnet)
+- ③ In advance, Please check `MATIC token balance` of `executor's wallet address` .
+  - Idealy, MATIC tokens balance is more than `1 MATIC` .
+  - Matic fancet: https://faucet.matic.network/ (Please select Mumbai network)
+
+<br>
+
+- ③ Execute script on `Polygon (Matic) mumbai testnet`
 ```
-$ ganache-cli -d --fork https://kovan.infura.io/v3/{YOUR INFURA KEY OF KOVAN}
+$ npm run script:Geyser
+```
+
+<br>
+
+## 【Test】on Local
+- 1: Start ganache-cli with kovan testnet-fork (using Infura Key of Kovan tesntnet)
+```
+$ ganache-cli -d
 ```
 (※ `-d` option is the option in order to be able to use same address on Ganache-CLI every time)  
 (※ Please stop and re-start if an error of `"Returned error: project ID does not have access to archive state"` is displayed)  
@@ -75,27 +97,6 @@ $ ganache-cli -d --fork https://kovan.infura.io/v3/{YOUR INFURA KEY OF KOVAN}
     ($ truffle test ./test/test-local/Geyser.test.js) 
 
 <br>
-
-## 【Script】on Polygon (Matic)
-- ① Add `.env` to the root directory.
-  - Please reference how to write from `.env.example` .  
-    https://github.com/masaun/geyser-on-polygon/blob/main/.env.example
-
-<br>
-
-- ② In advance, Please check `MATIC token balance` of `executor's wallet address` .
-  - Idealy, MATIC tokens balance is more than `1 MATIC` .
-  - Matic fancet: https://faucet.matic.network/ (Please select Mumbai network)
-
-<br>
-
-- ③ Execute script on `Polygon (Matic) mumbai testnet`
-```
-$ npm run script:Geyser
-```
-
-<br>
-
 
 ***
 
