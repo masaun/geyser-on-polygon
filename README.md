@@ -36,7 +36,7 @@
 ### ① Install modules
 - Install npm modules in the root directory
 ```
-$ npm install
+npm install
 ```
 
 <br>
@@ -44,7 +44,7 @@ $ npm install
 ### ② Compile contracts
 - on Polygon (Matic) mumbai testnet
 ```
-$ npm run compile:polygon_testnet
+npm run compile:polygon_testnet
 ```
 
 <br>
@@ -72,7 +72,7 @@ https://infura.io/
 - ③ Execute script on `Polygon (Matic) mumbai testnet`
 (※ This script include deployment of smart contracts on Polygon)
 ```
-$ npm run script:Geyser
+npm run script:Geyser
 ```
 
 <br>
