@@ -41,20 +41,15 @@ $ npm install
 
 <br>
 
-### ② Compile & migrate contracts
-- on local
-```
-$ npm run migrate:local
-```
-
+### ② Compile contracts
 - on Polygon (Matic) mumbai testnet
 ```
-$ npm run migrate:polygon_testnet
+$ npm run compile:polygon_testnet
 ```
 
 <br>
 
-## 【Script】on Polygon (Matic)
+## 【Script for demo】on Polygon (Matic) mumbai testnet
 - ① Get API-key from Infura  
 https://infura.io/
 

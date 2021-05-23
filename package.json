@@ -12,6 +12,7 @@
     "script:Geyser": "truffle exec ./scripts/polygon-matic/Geyser.script.js --network polygon_testnet",
     "compile:local": "truffle compile --reset --network local",
     "migrate:local": "truffle migrate --reset --network local",
+    "compile:polygon_testnet": "truffle compile --reset --network polygon_testnet",
     "migrate:polygon_testnet": "truffle migrate --reset --network polygon_testnet"
   },
   "author": "masaun",
