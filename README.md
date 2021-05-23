@@ -70,9 +70,17 @@ https://infura.io/
 <br>
 
 - ③ Execute script on `Polygon (Matic) mumbai testnet`
+(※ This script include deployment of smart contracts on Polygon)
 ```
 $ npm run script:Geyser
 ```
+
+<br>
+
+## 【Demo】
+- Demo video that script above is executed
+https://youtu.be/nwyNV8b0XyI
+
 
 <br>
 
