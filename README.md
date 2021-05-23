@@ -83,4 +83,16 @@ $ npm run script:Geyser
 ***
 
 ## 【References】
-- Polygon (Open Defi Hackathon)：https://gitcoin.co/issue/maticnetwork/matic-bounties/20/100025642
+- Polygon (Matic)
+  - Website: https://polygon.technology/
+  - Doc: https://docs.matic.network/docs/develop/getting-started 
+  - MATIC fancet：https://faucet.matic.network/
+  - Network setting for MetaMask：https://github.com/masaun/tokenized-carbon-credit-marketplace#setup-wallet-by-using-metamask
+  - Polygon (Open Defi Hackathon)：https://gitcoin.co/issue/maticnetwork/matic-bounties/20/100025642
+
+<br>
+
+- Geyser  
+  - Website: https://www.gysr.io/  
+  - Doc: https://www.gysr.io/docs  
+  - Smart contract：https://github.com/gysr-io/core  
