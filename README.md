@@ -2,7 +2,10 @@
 
 ***
 ## 【Introduction of the Geyser on Polygon】
-- This is a smart contract that 
+- This is Geyser's smart contract on Polygon.
+  - Geyser ( https://www.gysr.io/ ) is an open platform for yield farming and token distribution.
+  - But, that is only deployed on Mainnet. Therefore, users need to pay high gas fees.
+  - To solve this issue from users perspective, I deployed Geyser's smart contract on Polygon.
 
 &nbsp;
 
@@ -74,27 +77,6 @@ https://infura.io/
 ```
 $ npm run script:Geyser
 ```
-
-<br>
-
-## 【Test】on Local
-- 1: Start ganache-cli with kovan testnet-fork (using Infura Key of Kovan tesntnet)
-```
-$ ganache-cli -d
-```
-(※ `-d` option is the option in order to be able to use same address on Ganache-CLI every time)  
-(※ Please stop and re-start if an error of `"Returned error: project ID does not have access to archive state"` is displayed)  
-
-<br>
-
-- 2: Execute test of the smart-contracts (on the local)
-  - Test for the GeyserFactory contract  
-    `$ npm run test:GeyserFactory`  
-    ($ truffle test ./test/test-local/GeyserFactory.test.js) 
-
-  - Test for the Geyser contract  
-    `$ npm run test:Geyser`  
-    ($ truffle test ./test/test-local/Geyser.test.js) 
 
 <br>
 
