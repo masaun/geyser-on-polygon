@@ -5,7 +5,7 @@
 - This is Geyser's smart contract on Polygon.
   - Geyser ( https://www.gysr.io/ ) is an open platform for yield farming and token distribution.
   - But, that is only deployed on Mainnet. Therefore, users need to pay high gas fees and wait for long time to finalize transactions.
-  - To solve this issue from user perspective, I try to do that Geyser's smart contract works on Polygon.
+  - To solve this issue from user perspective, I try to do that Geyser's smart contract works on Polygon. (Polygon mumbai testnet)
 
 &nbsp;
 
