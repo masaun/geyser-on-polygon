@@ -66,7 +66,7 @@ async function main() {
     console.log("\n------------- Set wallet addresses -------------")
     await setWalletAddress()
 
-    console.log("\n------------- Deploy smart contracts -------------")
+    console.log("\n------------- Deploy smart contracts on Polygon mumbai testnet -------------")
     await DeploySmartContracts()
 
     // console.log("\n------------- Workflow of Fancet contract -------------")
