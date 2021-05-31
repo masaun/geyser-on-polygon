@@ -21,17 +21,17 @@ contract Fancet {
 
     function transferLPToken() public returns (bool) {
         uint amount = 1e3 * 1e18;  // 1000
-        lpToken.transferFrom(msg.sender, address(this), amount);
+        lpToken.transfer(msg.sender, amount);
     }
 
     function transferRewardToken() public returns (bool) {
         uint amount = 1e3 * 1e18;  // 1000
-        rewardToken.transferFrom(msg.sender, address(this), amount);
+        rewardToken.transfer(msg.sender, amount);
     }
 
     function transferGeyserToken() public returns (bool) {
         uint amount = 1e3 * 1e18;  // 1000
-        geyserToken.transferFrom(msg.sender, address(this), amount);
+        geyserToken.transfer(msg.sender, amount);
     }
 
 }
